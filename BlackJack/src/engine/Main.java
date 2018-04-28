@@ -33,6 +33,8 @@ public class Main {
 		
 		File settingsINI = new File("Settings.ini");
 		
+		// SETTING MONITOR DIMENSION
+		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Settings.widthMonitor = (int)screenSize.getSize().getWidth();
 		Settings.heightMonitor = (int)screenSize.getSize().getHeight();
