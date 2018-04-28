@@ -21,29 +21,16 @@ import global.Constants;
 import global.Settings;
 
 public class MainScreen extends JPanel implements ActionListener, KeyListener, Constants {
-	
+
+	private static final long serialVersionUID = 1L;
+
 	private UI mainMenu= new UI();
 	
 	private Timer t;
 	
 	private Sprite background = new Sprite();
-	private Sprite menu = new Sprite();
 	
 	private UI[] menus = new UI[6];
-	private UI[] parameters = new UI[6];
-	
-	private int menuSelect;
-	private int parameterSelect;
-	
-	private Sprite menuTitle = new Sprite();
-	private Sprite menuTitleBar = new Sprite();
-	private Sprite menuIcon = new Sprite();
-	private Sprite helpBar = new Sprite();
-	private Sprite helpBarString = new Sprite();
-	private Sprite titleMenu1 = new Sprite();
-	private Sprite titleMenu2 = new Sprite();
-	
-	private String help;
 	
 	boolean options;
 	
@@ -114,16 +101,16 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
 		background.setFillRect(Settings.WIDTH, Settings.HEIGHT, Color.WHITE);
 		background.setLocation(0, 0);
 		
-		mainMenu.setBackMenu(true, 0, 0, 580, 1080, Color.BLACK, 0.6f);
+		mainMenu.setBackMenu(true, 0, 0, 580, 1080, Color.BLACK, 1f);
 		mainMenu.setBackImage(Profile.character.getBackImage(), 1f);
 		mainMenu.setMenuArray(arrayMenu, 80, 65, 300, Constants.LEFT_TO_RIGHT, menuFont, Color.WHITE, 1f);
 		
-		mainMenu.setBackAnimationSpeed(10, 0, 0, 0, 0, 0);
+		mainMenu.setBackAnimationSpeed(0.5f, 0, 0, 0, 0, 0);
 		mainMenu.setBackInitialPoint(-580, 0, 580, 1080, 1f, 0.6f);
 		mainMenu.setBackAnimation(true);
 		mainMenu.setBackPosToInitial();
 		
-		mainMenu.setMenuAnimationSpeed(11, 0, 0);
+		mainMenu.setMenuAnimationSpeed(0.5f, 0, 0);
 		mainMenu.setMenuInitialPoint(-580,300,1f);
 		mainMenu.setMenuAnimation(true);
 		mainMenu.setMenuPosToInitial();
@@ -133,6 +120,8 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
 		
 		mainMenu.setKeyListener(window);
 		mainMenu.setKeyScroll(true);
+		
+		mainMenu.open();
 		
 		for (int i = 0; i < menuStrings.length; i++){
 			

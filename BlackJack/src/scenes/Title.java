@@ -144,8 +144,38 @@ public class Title extends JPanel implements ActionListener, KeyListener{
         city2.setLocation(tipo.getPosX(),stripe2.getFinalY());
         city2.setInitialDimension(city2.getFinalWidth(), 0);
         city2.setDimensionToInitial();
-        city2.setMotionAnimation(0, 0, 0, 1.5f, 0);    
+        city2.setMotionAnimation(0, 0, 0, 1.5f, 0);
         
+        // TEXT FIELD - NICKNAME
+        
+		tfName.setFont(new Font("axis", Font.PLAIN, Settings.convertFont(32)));
+        tfName.setBackground(Color.WHITE);
+        tfName.setForeground(Color.BLACK);
+        tfName.setColumns(10);
+        tfName.setBounds(Settings.WIDTH/2 - (Settings.convertPositionX(400)/2), Settings.HEIGHT/2 - (Settings.convertPositionY(50)/2),Settings.convertPositionX(400), Settings.convertPositionY(50));
+ 		tfName.setHorizontalAlignment(JTextField.CENTER);
+ 		tfName.addKeyListener(new KeyAdapter(){
+ 			public void keyTyped(KeyEvent e) { 
+ 		        if (tfName.getText().length() >= 10 )
+ 		            e.consume(); 
+ 			}
+ 			public void keyPressed(KeyEvent e) {
+ 				if (e.getKeyCode() == KeyEvent.VK_ENTER){
+ 					if (tfName.getText().length() > 0){
+ 						Profile.name = tfName.getText();
+ 						Profile.character = new Persona("Red Queen");
+ 						window.requestFocus();
+ 						CDL.countDown();
+ 					}
+ 				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+ 					
+ 					repaint();
+ 					
+ 					
+ 				}
+ 			}
+ 		});
+
         
         t = new Timer((int) Settings.FPS1000, this);
         t.start();
@@ -204,44 +234,15 @@ public class Title extends JPanel implements ActionListener, KeyListener{
     	
     	if (phase == 8 && tipo.getAnimation() != true) {
     		insertName.setAnimation(true);
-    		phase++;
-    		
-    		tfName.setFont(new Font("axis", Font.PLAIN, Settings.convertFont(32)));
-            tfName.setBackground(Color.WHITE);
-            tfName.setForeground(Color.BLACK);
-            tfName.setColumns(10);
-            tfName.setBounds(Settings.WIDTH/2 - (Settings.convertPositionX(400)/2), Settings.HEIGHT/2 - (Settings.convertPositionY(50)/2),Settings.convertPositionX(400), Settings.convertPositionY(50));
-            tfName.setVisible(true);
-     		tfName.setHorizontalAlignment(JTextField.CENTER);
-     		tfName.addKeyListener(new KeyAdapter(){
-     			public void keyTyped(KeyEvent e) { 
-     		        if (tfName.getText().length() >= 10 )
-     		            e.consume(); 
-     			}
-     			public void keyPressed(KeyEvent e) {
-     				if (e.getKeyCode() == KeyEvent.VK_ENTER){
-     					if (tfName.getText().length() > 0){
-     						Profile.name = tfName.getText();
-     						Profile.character = new Persona("Red Queen");
-     						window.requestFocus();
-     						CDL.countDown();
-     					}
-     				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
-     					
-     					repaint();
-     					
-     					
-     				}
-     			}
-     		});
- 			add(tfName, BorderLayout.CENTER);
+    		tfName.setVisible(true);
+    		add(tfName, BorderLayout.CENTER);
  			tfName.grabFocus();
     		phase++;
  
     	}
     	
     	if (phase == 9) {
-    		tfName.setBounds(Settings.WIDTH/2 - (Settings.convertPositionX(400)/2), Settings.HEIGHT/2 - (Settings.convertPositionY(50)/2),Settings.convertPositionX(400), Settings.convertPositionY(50));
+    		 tfName.setBounds(Settings.WIDTH/2 - (Settings.convertPositionX(400)/2), Settings.HEIGHT/2 - (Settings.convertPositionY(50)/2),Settings.convertPositionX(400), Settings.convertPositionY(50));
     	}
     	
     		repaint();

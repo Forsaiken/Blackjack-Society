@@ -326,6 +326,38 @@ public class UI implements KeyListener {
 	}
 	
 	public void open() {
+		
+		if (this.backRect != null) {
+			this.backRect.setInitialLocation(this.backPosX[0], this.backPosY[0]);
+			this.backRect.setInitialDimension(this.backWidth[0], this.backHeight[0]);
+			this.backRect.setInitialAlpha(this.backColorAlpha[0]);
+			
+			this.backRect.setFinalLocation(this.backPosX[2], this.backPosY[2]);
+			this.backRect.setFinalDimension(this.backWidth[2], this.backHeight[2]);
+			this.backRect.setFinalAlpha(this.backColorAlpha[2]);
+			
+			this.backRect.setLocationToInitial();
+			this.backRect.setDimensionToInitial();
+			this.backRect.setAlphaToInitial();
+			
+			this.backRect.setMotionAnimation(this.spdBackPosX, this.spdBackPosY, this.spdBackWidth, this.spdBackHeight, this.spdBackColorAlpha);
+			this.backRect.setAnimation(true);
+		}
+		
+		if (this.backImage != null) {
+			this.backImage.setInitialLocation(this.backPosX[0], this.backPosY[0]);
+			this.backImage.setInitialAlpha(this.backImageAlpha[0]);
+			
+			this.backImage.setFinalLocation(this.backPosX[2], this.backPosY[2]);
+			this.backImage.setFinalAlpha(this.backImageAlpha[2]);
+			
+			this.backImage.setLocationToInitial();
+			this.backImage.setAlphaToInitial();
+			
+			this.backImage.setMotionAnimation(this.spdBackPosX, this.spdBackPosY, this.spdBackWidth, this.spdBackHeight, this.spdBackImageAlpha);
+			this.backImage.setAnimation(true);
+		}
+		
 		if (this.menuStrings != null) {
 			for (int i = 0; i < menuStrings[0].length; i++) {
 				this.menuStrings[0][i].setInitialLocation(this.menuPosX[0], this.menuPosY[0] + this.arraySpacement * i);
@@ -337,7 +369,6 @@ public class UI implements KeyListener {
 				this.menuStrings[0][i].setAlphaToInitial();
 			
 				this.menuStrings[0][i].setMotionAnimation(this.spdMenuPosX, this.spdMenuPosY, 0, 0, this.spdMenuAlpha);
-			
 				this.menuStrings[0][i].setAnimation(true);
 				this.menuAnimation = true;
 			}
@@ -347,6 +378,7 @@ public class UI implements KeyListener {
 	public void lock() {
 		if (this.menuStrings != null) {
 			for (int i = 0; i < menuStrings[0].length; i++) {
+				this.menuStrings[0][i].resetCountAnimation();
 				this.menuStrings[0][i].setInitialLocation(this.menuPosX[2], this.menuPosY[2] + this.arraySpacement * i);
 				this.menuStrings[0][i].setFinalLocation(this.menuPosX[0], this.menuPosY[0] + this.arraySpacement * i);
 				this.menuStrings[0][i].setLocationToInitial();
@@ -461,7 +493,7 @@ public class UI implements KeyListener {
 		}
 	}
 	
-	public void setMenuAnimationSpeed(int PosX,int PosY,float StringAlpha) {
+	public void setMenuAnimationSpeed(float PosX,float  PosY,float StringAlpha) {
 		this.spdMenuPosX		= PosX;
 		this.spdMenuPosY		= PosY;
 		this.spdMenuAlpha		= StringAlpha;
@@ -572,6 +604,8 @@ public class UI implements KeyListener {
 	
 	public void setBackImage(String imagePath, float imageAlpha){
 		
+		this.backImageAlpha[2] = imageAlpha;
+		
 		this.hasBackImage = true;
 		
 		backImage = new Sprite();
@@ -627,6 +661,17 @@ public class UI implements KeyListener {
 		this.backHeight[1] = this.backHeight[0];
 		this.backImageAlpha[1] = this.backImageAlpha[0];
 		this.backColorAlpha[1] = this.backColorAlpha[0];
+		
+		if (this.backRect != null) {
+			this.backRect.setLocationToInitial();
+			this.backRect.setAlphaToInitial();
+			this.backRect.setDimensionToInitial();
+		}
+		
+		if (this.backImage != null) {
+			this.backImage.setLocationToInitial();
+			this.backImage.setAlphaToInitial();
+		}
 	}
 	
 	public void setBackPosToFinal() {
@@ -636,6 +681,17 @@ public class UI implements KeyListener {
 		this.backHeight[1] = this.backHeight[2];
 		this.backImageAlpha[1] = this.backImageAlpha[2];
 		this.backColorAlpha[1] = this.backColorAlpha[2];
+		
+		if (this.backRect != null) {
+			this.backRect.setLocationToFinal();
+			this.backRect.setAlphaToFinal();
+			this.backRect.setDimensionToFinal();
+		}
+		
+		if (this.backImage != null) {
+			this.backImage.setLocationToFinal();
+			this.backImage.setAlphaToFinal();
+		}
 	}
 	
 	public void setBackAnimationSpeed(float posX,float posY,float width,float height ,float alphaRect ,float alphaImage) {

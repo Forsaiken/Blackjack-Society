@@ -118,12 +118,15 @@ public class Main {
 		e.printStackTrace();
 	}
 	
-	**/
-	
 	// START TITLE SCENE
 	
 	stopSignal = new CountDownLatch(1);
 	SwingUtilities.invokeLater(Title);
+	
+	**/
+	
+	stopSignal = new CountDownLatch(1);
+	SwingUtilities.invokeLater(mainScreen);
 	
 	}
 
@@ -171,6 +174,14 @@ public class Main {
 				}
         		title.setVisible(true);
         		window.getContentPane().add(title);
+       }       
+    };
+    
+    private static Runnable mainScreen = new Runnable() {
+        public void run() {
+        		main_screen = new MainScreen(window, stopSignal);
+        		main_screen.setVisible(true);
+        		window.getContentPane().add(main_screen);
        }       
     };
 }
