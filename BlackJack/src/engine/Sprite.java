@@ -434,7 +434,7 @@ public class Sprite extends JPanel implements Constants {
 		this.gradientRadius = radius;
 		this.gradientDiffusion = dist;
 		this.gradientColor = colors;
-		this.radialGradient = new RadialGradientPaint(this.posX[2] + this.width[2]/2,this.posY[2] + this.height[2]/2, radius, dist, colors, CycleMethod.NO_CYCLE);
+		this.radialGradient = new RadialGradientPaint(this.posX[1] + this.width[2]/2,this.posY[1] + this.height[2]/2, radius, dist, colors, CycleMethod.NO_CYCLE);
 	}
 
 	public void grayScale() {
@@ -444,6 +444,10 @@ public class Sprite extends JPanel implements Constants {
 	}
 	
 	// GETS - STRING
+	
+	public Font getFont() {
+		return this.font;
+	}
 	
 	public int getStringWidth(Graphics g){
 		g2d = (Graphics2D) g;
@@ -530,6 +534,7 @@ public class Sprite extends JPanel implements Constants {
 	public boolean getAnimation() {
 		return this.animation;
 	}
+	
 	// GETS - IMAGE
 	
 	public Image getImage(){

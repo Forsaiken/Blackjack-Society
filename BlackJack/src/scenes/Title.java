@@ -76,7 +76,7 @@ public class Title extends JPanel implements ActionListener, KeyListener{
         titleMenu = new UI();
         titleMenu.setBackMenu(false, 1050, 700, 500, 500, null, 0f);
         titleMenu.setMenuArray(array_menu, 40, 960, 800, Constants.CENTER, new Font("axis", Font.CENTER_BASELINE, Settings.convertFont(30)), Color.BLACK, 1f);
-        titleMenu.setSelectorMenu(false, null, 0f, new Font("axis", Font.CENTER_BASELINE, Settings.convertFont(48)), Color.BLACK);
+        titleMenu.setSelectorMenu(null, 0f, new Font("axis", Font.CENTER_BASELINE, Settings.convertFont(48)), Color.BLACK, 1f);
         titleMenu.setMenuInitialPoint(960, 800, 0f);
         titleMenu.setMenuPosToInitial();
         titleMenu.setSelect(0);

@@ -24,7 +24,7 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
 
 	private static final long serialVersionUID = 1L;
 
-	private UI mainMenu= new UI();
+	private UI mainMenu=  new UI();
 	
 	private Timer t;
 	
@@ -46,7 +46,7 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
 	private int[][] matchParameterValues = {{0},{0},{1,2,3,4,5},{0,1}};
 	private int[] matchParameterSelect = {0,0,0,0,0};
 	
-	private String[][] profileParameterStrings = {{Profile.name}};
+	private String[][] profileParameterStrings = {{"TestE"}};
 	private int[][] profileParameterValues = {{0}};
 	private int[] profileParameterSelect = {0};
 	
@@ -57,23 +57,26 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
 	private String[][] optionsParameterStrings = {{"960x540","1280x720","1366x768","1600x900","1920x1080"},{"OFF","ON"},{"OFF","ON"},{"English","Português (Brasil)"}};
 	private int[][] optionsParameterValues = {{0,1,2,3,4},{0,1},{0,1},{0,1}};
 	private int[] optionsParameterSelect = {0,0,0,0};
+	private int[] exit = {0};
 
-	private int[][] parametersSelect = {societyParameterSelect, matchParameterSelect, profileParameterSelect, tutorialParameterSelect, optionsParameterSelect};
+	private int[][] parametersSelect = {societyParameterSelect, matchParameterSelect, profileParameterSelect, tutorialParameterSelect, optionsParameterSelect, exit};
 	
 	private String[][][] menuStrings = {
 			{{"DIFFICULT", "NUMBER OF PLAYERS","ALLOW POWERS","NUMBER OF SEASONS","START SOCIETY"}},
 			{{"MATCH MODE","GAME MODE","NUMBER OF PLAYERS","ALLOW POWERS"}},
 			{{"NICKNAME"}},
 			{{"MODE","START"}},
-			{{"VIDEO","RESOLUTION","FULL SCREEN","SMOOTH RENDER","LANGUAGE"},{"AUDIO","MUSIC VOLUME", "SOUND EFFECTS VOLUME"},{"GAME","GAME SPEED"}}
+			{{"VIDEO","RESOLUTION","FULL SCREEN","SMOOTH RENDER","LANGUAGE"},{"AUDIO","MUSIC VOLUME", "SOUND EFFECTS VOLUME"},{"GAME","GAME SPEED"}},
+			{{"teste"}}
 	};
 	
 	private String[][][] parameterStrings = {
 			{{"EASY", "NORMAL", "HARD"},{"25","50","75","100"},{"YES","NO"},Settings.createIntString(3, 8, 1)},
 			{{"NORMAL MATCH"},{"BLACKJACK"},{"2","3","4","5","6"},{"YES","NO"}},
-			{{Profile.name}},
+			{{"TESTE"}},
 			{{"BLACKJACK"}},
-			{{"960x540","1280x720","1366x768","1600x900","1920x1080"},{"OFF","ON"},{"OFF","ON"},{"English","Português (Brasil)"}}
+			{{"960x540","1280x720","1366x768","1600x900","1920x1080"},{"OFF","ON"},{"OFF","ON"},{"English","Português (Brasil)"}},
+			{{"teste"}}
 	};
 			
 	private boolean load = false;
@@ -95,9 +98,6 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
     		optionsParameterStrings[0] = resolutionString;    		
     	}
 		
-		setFocusable(true);
-		window.addKeyListener(this);
-		
 		background.setFillRect(Settings.WIDTH, Settings.HEIGHT, Color.WHITE);
 		background.setLocation(0, 0);
 		
@@ -115,7 +115,7 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
 		mainMenu.setMenuAnimation(true);
 		mainMenu.setMenuPosToInitial();
 		
-		mainMenu.setSelectorMenu(true, Color.RED, 0.6f, menuFont, Color.WHITE);
+		mainMenu.setSelectorMenu(Color.RED, 0.6f, menuFont, Color.WHITE, 1f);
 		mainMenu.setSelect(0);
 		
 		mainMenu.setKeyListener(window);
@@ -127,16 +127,22 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
 			
 			menus[i] = new UI();
 			
-			menus[i].setTitleBar(arrayMenu[0][i], 579, 0, 1342, 80, Constants.LEFT_TO_RIGHT,
+			menus[i].setTitleBar(arrayMenu[0][i], 580, 0, 1342, 80, Constants.LEFT_TO_RIGHT,
 					new Font("axis", Font.CENTER_BASELINE, Settings.convertFont(36)), Color.WHITE, Color.BLUE,
 					1f, 1f);
-			menus[i].setTitleBarPosToFinal();
+			menus[i].setTitleBarInitialPoints(580, -80, 1342, 80, 1f, 1f);
+			menus[i].setTitleBarAnimationSpeed(0, 0.5f, 0, 0, 0, 0);
 			
-			menus[i].setBackMenu(true, 580, 65, 1050, 952, Color.WHITE, 0.9f);
+			menus[i].setBackMenu(true, 580, 65, 1340, 952, Color.WHITE, 0.9f);
+			menus[i].setBackInitialPoint(580, 65, 1340, 952, 0f, 1f);
+			
 			menus[i].setMenuArray(menuStrings[i], 65, 650, 164, Constants.LEFT_TO_RIGHT, menuFont, Color.BLACK, 1f);
-			menus[i].setSelectorMenu(true, Color.LIGHT_GRAY, 0.5f, menuFont, Color.BLACK);
-			menus[i].setMenuPosToFinal();
+			menus[i].setMenuInitialPoint(650, 164, 0f);
+			menus[i].setMenuAnimationSpeed(0, 0, 0.5f);
+			
+			menus[i].setSelectorMenu(Color.LIGHT_GRAY, 0.5f, menuFont, Color.BLACK, 1f);
 			menus[i].setSelect(0);
+			menus[i].open();
 			
 			menus[i].setParameterMenu(parameterStrings[i], 1600, Constants.CENTER);
 			menus[i].setParameterSelect(parametersSelect[i]);
@@ -154,14 +160,7 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
 		
 		background.draw(g);
 		mainMenu.draw(g);
-		//titleMenu1.draw(g);
-		//titleMenu2.draw(g);
-		//helpBar.draw(g);
-		//menuTitleBar.draw(g);
-		//menuTitle.draw(g);
-		//helpBarString.draw(g);
 		menus[mainMenu.getSelect()].draw(g);
-		//parameters[menu.getSelect()].draw(g);
 	}
 
 	@Override
@@ -169,8 +168,6 @@ public class MainScreen extends JPanel implements ActionListener, KeyListener, C
 		
 	}
 		
-		
-
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub

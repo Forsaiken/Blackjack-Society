@@ -18,6 +18,7 @@ import global.Switch;
 import scenes.Intro;
 import scenes.MainScreen;
 import scenes.Title;
+import scenes.BlackJack;
 
 public class Main {
 	
@@ -25,6 +26,7 @@ public class Main {
 	private static Intro intro;
 	private static Title title;
 	private static MainScreen main_screen;
+	private static BlackJack blackjack;
 	private static boolean loadSettings = false;
 	
 	private static CountDownLatch stopSignal;
@@ -118,6 +120,7 @@ public class Main {
 		e.printStackTrace();
 	}
 	
+	
 	// START TITLE SCENE
 	
 	stopSignal = new CountDownLatch(1);
@@ -126,8 +129,7 @@ public class Main {
 	**/
 	
 	stopSignal = new CountDownLatch(1);
-	SwingUtilities.invokeLater(mainScreen);
-	
+	SwingUtilities.invokeLater(BlackJack);
 	}
 
 	private static Runnable Frame = new Runnable() {
@@ -179,10 +181,18 @@ public class Main {
     
     private static Runnable mainScreen = new Runnable() {
         public void run() {
-        		main_screen = new MainScreen(window, stopSignal);
-        		main_screen.setVisible(true);
-        		window.getContentPane().add(main_screen);
+        	main_screen = new MainScreen(window, stopSignal);
+        	main_screen.setVisible(true);
+        	window.getContentPane().add(main_screen);
        }       
+    };
+    
+    private static Runnable BlackJack = new Runnable() {
+    	public void run() {
+    		blackjack = new BlackJack(window, stopSignal);
+    		blackjack.setVisible(true);
+    		window.getContentPane().add(blackjack);    		
+    	}
     };
 }
 		/**

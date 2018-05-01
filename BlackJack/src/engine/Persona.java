@@ -13,8 +13,8 @@ public class Persona implements Path {
 	public Persona(String character){
 		this.character = character;
 		if (character == "Red Queen"){
-			this.themeColor[0] = new Color(122,0,0);
-			this.themeColor[1] = new Color(168,26,26);
+			this.themeColor[0] = new Color(161,63,56);
+			this.themeColor[1] = new Color(46,3,3);
 		}
 		this.pathMenuImage = (Path.characterMenu+character+" Inative"+".png");
 	}
@@ -28,6 +28,13 @@ public class Persona implements Path {
 	}
 	
 	// GETS
+	public String getName() {
+		return this.character;
+	}
+	
+	public Color[] getThemeColor() {
+		return themeColor;
+	}
 	
 	public String getBackImage() {
 		return this.pathMenuImage;

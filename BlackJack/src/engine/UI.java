@@ -44,8 +44,8 @@ public class UI implements KeyListener {
 	private float[] tbRectAlpha = {0f,0f,0f};
 	private float[] tbFontAlpha = {0f,0f,0f};
 	
-	private int spdtbX,spdtbY, spdtbW, spdtbH;
-	private float spdtbStringAlpha, spdtbRectAlpha;
+	private float spdtbX,spdtbY, spdtbW, spdtbH;
+	private float spdtbFontAlpha, spdtbRectAlpha;
 	
 	// VARIABLES - PARAMETERS
 	
@@ -63,15 +63,14 @@ public class UI implements KeyListener {
 	
 	private Font selectFont;
 	private Color selectFontColor;
+	private float selectFontAlpha;
 	
-	private boolean hasSelectRect;
 	private Sprite selectRect;
 	private Color selectRectColor;
+	private float selectRectAlpha;
 	
-	private boolean hasSelectorImage;
 	private Sprite selectorImage;
 	
-	private boolean hasSelectedImage;
 	private Sprite selectedImage;
 	
 	// VARIABLES - MENU ARRAY
@@ -127,27 +126,6 @@ public class UI implements KeyListener {
 		
 		// Animation Back Menu Position update
 		
-		if (this.backAnimation) {
-			if (backPosX[1] + this.spdBackPosX <= backPosX[2]) {
-				this.backPosX[1] += this.spdBackPosX;
-			}
-			if (backPosY[1] + this.spdBackPosY <= backPosY[2]) {
-				this.backPosY[1] += this.spdBackPosY;
-			}
-			if (backWidth[1] + this.spdBackWidth <= backWidth[2]) {
-				this.backWidth[1] += this.spdBackWidth;
-			}
-			if (backHeight[1] + this.spdBackHeight <= backHeight[2]) {
-				this.backHeight[1] += this.spdBackHeight;
-			}
-			if (backImageAlpha[1] + this.spdBackImageAlpha <= backImageAlpha[2]) {
-				this.backImageAlpha[1] += this.spdBackImageAlpha;
-			}
-			if (backColorAlpha[1] + this.spdBackColorAlpha <= backColorAlpha[2]) {
-				this.backColorAlpha[1] += this.spdBackColorAlpha;
-			}
-		}
-		
 		/**
 		
 		if (this.menuAnimation) {
@@ -165,66 +143,41 @@ public class UI implements KeyListener {
 		
 		**/
 		
-		if (this.tbAnimation) {
-			if (tbPosX[1] + this.spdtbX <= tbPosX[2]) {
-				this.tbPosX[1] += this.spdtbX;
-			}
-			if (tbPosY[1] + this.spdtbY <= tbPosY[2]) {
-				this.tbPosY[1] += this.spdtbY;
-			}
-			if (tbWidth[1] + this.spdtbW <= tbWidth[2]) {
-				this.tbWidth[1] += this.spdtbW;
-			}
-			if (tbHeight[1] + this.spdtbH <= tbHeight[2]) {
-				this.tbHeight[1] += this.spdtbH;
-			}
-			if (tbFontAlpha[1] + this.spdtbStringAlpha <= tbFontAlpha[2]) {
-				this.tbFontAlpha[1] += this.spdtbStringAlpha;
-			}
-			if (tbRectAlpha[1] + this.spdtbRectAlpha <= tbRectAlpha[2]) {
-				this.tbRectAlpha[1] += this.spdtbRectAlpha;
-			}
-		}
-		
-		if (this.menuAnimation || this.backAnimation || this.tbAnimation) {
-			this.updateSprites();
-		}
-		
 		// Drawing Back Menu
 		
-		if (hasBackImage)	{	backImage.draw(g);	}
-		if (hasBackRect)	{	backRect.draw(g);	}
+		if (this.backImage != null)	{	backImage.draw(g);	}
+		if (this.backRect != null)	{	backRect.draw(g);	}
 		
 		// Drawing Title Menu
 		
-		if (hasTitleMenu) {
+		if (this.tbRect != null || this.tbString != null) {
 			
-			if (this.tbRect != null)
-				this.tbRect.draw(g);
+			tbRect.draw(g);
 			
 			if (this.tbFormat == Constants.CENTER)
 				this.tbString.setLocation(this.tbRect.getWidth()/2 - this.tbString.getStringWidth(g)/2,
-						this.tbPosY[1] + this.tbRect.getHeight()/2 - this.tbString.getStringHeight(g)/2);
+						this.tbRect.getPosY() + this.tbRect.getHeight()/2 - this.tbString.getStringHeight(g)/2);
 			if (this.tbFormat == Constants.LEFT_TO_RIGHT) {
-				this.tbString.setLocation(this.tbPosX[1] + 50,
-						this.tbPosY[1] + this.tbString.getStringHeight(g) + (this.tbRect.getHeight()/2 - this.tbString.getStringHeight(g)/2));
+				this.tbString.setLocation(this.tbRect.getPosX() + 50,
+						this.tbRect.getPosY() + this.tbString.getStringHeight(g) + (this.tbRect.getHeight()/2 - this.tbString.getStringHeight(g)/2));
 			}
 			
-			this.tbString.draw(g);
-			
+			tbRect.draw(g);
+			tbString.draw(g);
+			System.out.println(tbString.getPosX() + " " + this.tbRect.getPosY());
 		}
 		
 		// Drawing Selector
 		
-		if (this.hasSelectorImage) {
+		if (this.selectorImage != null) {
 			this.selectorImage.setLocation(menuPosX[1], (this.menuPosY[1] - arraySpacement) + ((this.selectedArray + 1) * arraySpacement));
 			this.selectorImage.draw(g);
 		}
 		
 		int fontHeight = menuStrings[0][0].getStringHeight(g);
 		
-		if (this.hasSelectRect) {
-			this.selectRect.setLocation(backPosX[1], (menuPosY[1] + (arraySpacement/2 - fontHeight/2) + (arraySpacement * selectedArray)));
+		if (this.selectRect != null) {
+			this.selectRect.setLocation(backRect.getPosX(), (menuPosY[2] + (arraySpacement/2 - fontHeight/2) + (arraySpacement * selectedArray)));
 			this.selectRect.draw(g);
 		}
 		
@@ -258,7 +211,7 @@ public class UI implements KeyListener {
 			
 			for (int i = 0; i < this.menuParameterArray.length; i++) {
 				if (this.parameterTextFormat == Constants.CENTER) {
-					int parameterFontWidth = 	this.menuParameterStrings[i][this.menuParameterSelect[i]].getStringWidth(g);
+					int parameterFontWidth = this.menuParameterStrings[i][this.menuParameterSelect[i]].getStringWidth(g);
 					this.menuParameterStrings[i][this.menuParameterSelect[i]].setPosX(this.parameterPosX - parameterFontWidth/2);
 				}
 				
@@ -275,57 +228,23 @@ public class UI implements KeyListener {
 			}
 		}
 	}
-
-	public void updateSprites() {
-		
-		/**
-		if (this.hasBackRect && this.backAnimation) {
-			this.backRect.setLocation(this.backPosX[1], this.backPosY[1]);
-			this.backRect.setDimension(this.backWidth[1], this.backHeight[1]);
-			this.backRect.setAlpha(this.backColorAlpha[1]);
-		}
-		
-		if (this.hasBackImage && this.backAnimation) {
-			this.backImage.setLocation(this.backPosX[1], this.backPosY[1]);
-			this.backImage.setDimension(this.backWidth[1], this.backHeight[1]);
-			this.backImage.setAlpha(this.backImageAlpha[1]);
-		}
-		
-		if (this.tbHasRect) {
-			this.tbRect.setLocation(this.tbPosX[1], this.tbPosY[1]);
-			this.tbRect.setDimension(this.tbWidth[1], this.tbHeight[1]);
-			this.tbRect.setAlpha(this.tbRectAlpha[1]);
-		}
-		
-		**/
-		
-		/**
-		
-		if (this.menuAnimation) {
-			
-			Sprite[][] tempArray = new Sprite[1][menuArray[0].length];
-			
-			for(int i = 0; i < menuArray[0].length; i++) {
-				
-				tempArray[0][i] = new Sprite();
-				tempArray[0][i].setString(menuArray[0][i], menuFont, menuFontColor, menuFontAlpha[1]);
-				if (this.menuChangeSpacement) {
-					tempArray[0][i].setSpacementString(this.menuStringSpacement);
-				}
-				tempArray[0][i].setLocation(this.menuPosX[1], this.menuPosY[1] + (this.arraySpacement * i));
-				System.out.println(tempArray[0][i].getAlpha());
-			
-			}
-			
-			
-			this.menuStrings = tempArray;
-			
-		}
-	
-	**/
-	}
 	
 	public void open() {
+		
+		if(this.tbRect != null) {
+			this.tbRect.setLocationToInitial();
+			this.tbRect.setDimensionToInitial();
+			this.tbRect.setAlphaToInitial();
+			
+			this.tbRect.setMotionAnimation(spdtbX, spdtbY, spdtbW, spdtbH, spdtbRectAlpha);
+			this.tbRect.setAnimation(true);
+		}
+		
+		if(this.tbString != null) {
+			this.tbString.setAlphaToInitial();
+			this.tbString.setMotionAnimation(0,0,0,0,spdtbFontAlpha);
+			this.tbString.setAnimation(true);
+		}
 		
 		if (this.backRect != null) {
 			this.backRect.setInitialLocation(this.backPosX[0], this.backPosY[0]);
@@ -417,15 +336,44 @@ public class UI implements KeyListener {
 		
 		if (rectColor != null) {
 			this.tbRect = new Sprite();
-			this.tbHasRect = true;
-			this.tbRectAlpha[2] = rectAlpha;
 			this.tbRect.setFillRect(this.tbWidth[2], this.tbHeight[2], this.tbRectColor);
+			this.tbRect.setFinalLocation(this.tbPosX[2], this.tbPosY[2]);
+			this.tbRect.setLocation(this.tbPosX[2], this.tbPosY[2]);
+			this.tbRect.setFinalAlpha(this.tbRectAlpha[2]);
 			this.tbRect.setAlpha(this.tbRectAlpha[2]);
+		}
+	}
+	
+	public void setTitleBarInitialPoints (int posX, int posY, int width, int height, float rectAlpha, float fontAlpha) {
+		this.tbPosX[0] = Settings.convertPositionX(posX);
+		this.tbPosY[0] = Settings.convertPositionY(posY);
+		this.tbWidth[0] = Settings.convertWidth(width);
+		this.tbHeight[0] = Settings.convertHeight(height);
+		this.tbFontAlpha[0] = fontAlpha;
+		this.tbRectAlpha[0] = rectAlpha;
+		
+		if (tbString != null) {
+			this.tbString.setInitialAlpha(fontAlpha);
+		}
+		
+		if (tbRect != null) {
+			this.tbRect.setInitialLocation(tbPosX[0], tbPosY[0]);
+			this.tbRect.setInitialDimension(this.tbWidth[0], this.tbHeight[0]);
+			this.tbRect.setInitialAlpha(rectAlpha);
 		}
 	}
 	
 	public void setTitleAnimation (boolean animation) {
 		this.tbAnimation = animation;
+	}
+	
+	public void setTitleBarAnimationSpeed(float PosX,float  PosY,float Width, float Height, float fontAlpha, float rectAlpha) {
+		this.spdtbX		= PosX;
+		this.spdtbY		= PosY;
+		this.spdtbW		= Width;
+		this.spdtbH		= Height;
+		this.spdtbFontAlpha = fontAlpha;
+		this.spdtbRectAlpha = rectAlpha;
 	}
 	
 	public void setTitleBarPosToFinal() {
@@ -435,7 +383,6 @@ public class UI implements KeyListener {
 		this.tbHeight[1] = this.tbHeight[2];
 		this.tbRectAlpha[1] = this.tbRectAlpha[2];
 		this.tbFontAlpha[1] = this.tbFontAlpha[2];
-		this.updateSprites();
 	}
 	
 	// SETS - MENU ARRAY
@@ -564,24 +511,23 @@ public class UI implements KeyListener {
 	
 	// SETS - SELECT MENU
 	
-	public void setSelectorMenu(boolean isSelectRect, Color selectRectColor, float selectRectAlpha, Font selectFont, Color selectFontColor) {
+	public void setSelectorMenu(Color selectRectColor, float selectRectAlpha, Font selectFont, Color selectFontColor, float selectFontAlpha) {
 		
-		this.hasSelectRect = isSelectRect;
-		this.selectRectColor = selectRectColor;
-		this.selectFont = selectFont;
-		this.selectFontColor = selectFontColor;
-		
-		if (hasSelectRect) {
+		if (selectRectColor != null) {
 			this.selectRect = new Sprite();
-			this.selectRect.setFillRect(backWidth[0], arraySpacement - (arraySpacement * 2), Color.WHITE);
-			this.selectRect.setColor(selectRectColor);
+			this.selectRect.setFillRect(this.backRect.getFinalWidth(), arraySpacement - (arraySpacement * 2), selectRectColor);
 			this.selectRect.setAlpha(selectRectAlpha);
+		}
+		
+		if (selectFont != null) {
+			this.selectFont = selectFont;
+			this.selectFontColor = selectFontColor;
+			this.selectFontAlpha = selectFontAlpha;
 		}
 	}
 	
 	public void setSelectorImage(String imagePath, float imageAlpha) {
 		
-		this.hasSelectorImage = true;
 		this.selectorImage = new Sprite();
 		this.selectorImage.setImage(imagePath);
 		this.selectorImage.setAlpha(imageAlpha);
@@ -589,8 +535,6 @@ public class UI implements KeyListener {
 	
 	public void setSelectedImage(String imagePath, float imageAlpha) {
 		
-		this.hasSelectedImage = true;
-
 		this.selectedImage = new Sprite();
 		this.selectedImage.setImage(imagePath);
 		this.selectedImage.setAlpha(imageAlpha);
@@ -758,6 +702,7 @@ public class UI implements KeyListener {
 				this.setSelect(this.getSelect() - 1);
 			}
 		}
+		System.out.println(e.getKeyCode());
 		
 	}
 
