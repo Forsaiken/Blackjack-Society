@@ -2,7 +2,12 @@ package global;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import engine.Display;
 
@@ -90,4 +95,9 @@ public class Settings {
 			
 		}
 		
+		public static String convertToMoney (int money) {
+			
+			return NumberFormat.getIntegerInstance(Locale.GERMANY).format(money);
+			
+		}
 }

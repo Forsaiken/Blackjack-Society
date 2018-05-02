@@ -4,7 +4,9 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -20,7 +22,7 @@ public class BlackJack extends JPanel implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 	
-	Card[] deck;
+	ArrayList<Card> deck = new ArrayList<Card>();
 	Player[] players;
 
 	public BlackJack(Display window, CountDownLatch CDL) {
@@ -33,6 +35,7 @@ public class BlackJack extends JPanel implements ActionListener {
     		setLocation(wDiff/2,hDiff/2);
     	}
     	
+    	deck = this.createDeck();
     	players = this.createRandomPlayers(6);
     	
     	for (int i = 0; i < players.length; i++) {
@@ -51,9 +54,10 @@ public class BlackJack extends JPanel implements ActionListener {
 		}
 	}
 
-	public void createDeck() {
+	public ArrayList<Card> createDeck() {
 		
-		ArrayList<Card> tempDeck = new ArrayList<Card>();
+		ArrayList<Card> deck = new ArrayList<Card>();
+		
 		for (int x = 0; x < 13; x++) {
 			for (int y = 0; y < 4; y++) {
 				int value = 0;
@@ -62,10 +66,12 @@ public class BlackJack extends JPanel implements ActionListener {
 				else
 					value = x;
 				Card card = new Card(x,y,value);
-				tempDeck.add(card);
+				deck.add(card);
 			}
 		}
-		deck = tempDeck.toArray(deck);
+		
+		return deck;
+		
 	}
 	
 	public Player[] createRandomPlayers(int quantity) {
@@ -73,10 +79,14 @@ public class BlackJack extends JPanel implements ActionListener {
 		Player[] players = new Player[quantity];
 		
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player("RED QUEEN" , true, 5000, new Persona("Red Queen"), false);
+			players[i] = new Player("RED QUEEN" , true, 500000000, new Persona("Red Queen"), false);
 			players[i].setPosition(i);
-			players[i].setToBlackJack();
+			players[i].setRank(ThreadLocalRandom.current().nextInt(1, 100));
+			players[i].setBJmoney(5000);
+			players[i].BJaddHand();
+			players[i].BJaddCard(0, this.deck.get(ThreadLocalRandom.current().nextInt(0, deck.size() - 1)));
 		}
+		
 		return players;
 		
 	}
