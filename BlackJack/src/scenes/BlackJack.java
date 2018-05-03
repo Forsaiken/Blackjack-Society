@@ -24,6 +24,7 @@ public class BlackJack extends JPanel implements ActionListener {
 	
 	ArrayList<Card> deck = new ArrayList<Card>();
 	Player[] players;
+	boolean load = false;
 
 	public BlackJack(Display window, CountDownLatch CDL) {
 		
@@ -50,15 +51,27 @@ public class BlackJack extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		
 		for (int i = 0; i < players.length; i++) {
+			
 			players[i].blackjack(g);
+			
+			if (load != true) {
+				for (int z = 0; z < 3; z++) {
+					int index = ThreadLocalRandom.current().nextInt(0, deck.size());
+					Card pickcard = this.deck.get(index);
+					this.deck.remove(index);
+					players[i].BJaddCard(0, pickcard);
+				}
+			}
 		}
+		
+		load = true;
 	}
 
 	public ArrayList<Card> createDeck() {
 		
 		ArrayList<Card> deck = new ArrayList<Card>();
 		
-		for (int x = 0; x < 13; x++) {
+		for (int x = 1; x < 14; x++) {
 			for (int y = 0; y < 4; y++) {
 				int value = 0;
 				if (x >= 10)
@@ -79,12 +92,12 @@ public class BlackJack extends JPanel implements ActionListener {
 		Player[] players = new Player[quantity];
 		
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player("RED QUEEN" , true, 500000000, new Persona("Red Queen"), false);
+			players[i] = new Player("RED QUEEN" , true, 500000000, new Persona("RANDOM"), false);
+			players[i].setName(players[i].getCharacter().getName().toUpperCase());
 			players[i].setPosition(i);
 			players[i].setRank(ThreadLocalRandom.current().nextInt(1, 100));
 			players[i].setBJmoney(5000);
 			players[i].BJaddHand();
-			players[i].BJaddCard(0, this.deck.get(ThreadLocalRandom.current().nextInt(0, deck.size() - 1)));
 		}
 		
 		return players;

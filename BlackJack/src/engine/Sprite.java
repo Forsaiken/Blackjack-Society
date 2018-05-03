@@ -169,14 +169,23 @@ public class Sprite extends JPanel implements Constants {
 	public void setImage(String path){
 		try {
 			image = ImageIO.read(new File(path));
-			scaledImage = image.getScaledInstance(image.getWidth() * Settings.WIDTH/1920, image.getHeight() * Settings.HEIGHT/1080, Image.SCALE_SMOOTH);
+			scaledImage = image.getScaledInstance(Settings.convertWidth(image.getWidth()), Settings.convertHeight(image.getHeight()), Image.SCALE_SMOOTH);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Arquivo (" + path + ") não encontrado!");
 		}
 		
-		this.width[2] = image.getWidth() * Settings.WIDTH/1920;
-		this.height[2] = image.getHeight() * Settings.HEIGHT/1080;
+		this.width[2] = Settings.convertWidth(image.getWidth());
+		this.height[2] = Settings.convertHeight(image.getHeight());
+		this.width[1] = this.width[2];
+		this.height[1] = this.height[2];
+	}
+	
+	public void redimensionImageByWidth(int width) {
+		float scaledHeight = image.getHeight() * ((float)width / (float)image.getWidth());
+		scaledImage = image.getScaledInstance(width, (int) scaledHeight, Image.SCALE_SMOOTH);
+		this.width[2] = width;
+		this.height[2] = (int) scaledHeight;
 		this.width[1] = this.width[2];
 		this.height[1] = this.height[2];
 	}
