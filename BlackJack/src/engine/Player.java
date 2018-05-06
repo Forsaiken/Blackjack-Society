@@ -198,7 +198,7 @@ public class Player extends Sprite{
 			
 			bjsoma[x] = this.BJgetValueHand(bjHand.get(x));
 			if (bjsoma[x] == 21)
-				bjSoma[x].setStringName("BLACKJACK");
+				bjSoma[x].setStringName("BJ");
 			else if (bjsoma[x] > 21)
 				bjSoma[x].setStringName("OUT");
 			else
