@@ -227,6 +227,7 @@ public class Player extends Sprite{
 		
 		return soma;
 	}
+	
 	// GETS
 	
 	public String getName() {
