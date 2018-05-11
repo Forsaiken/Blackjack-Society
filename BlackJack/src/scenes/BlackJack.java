@@ -41,7 +41,6 @@ public class BlackJack extends JPanel implements ActionListener {
     	
     	deck = this.createDeck();
     	players = this.createRandomPlayers(6);
-    	HBplayers = this.createHelpBar();
     	
     	for (int i = 0; i < players.length; i++) {
     		
@@ -57,7 +56,6 @@ public class BlackJack extends JPanel implements ActionListener {
 		for (int i = 0; i < players.length; i++) {
 			
 			players[i].blackjack(g);
-			HBplayers[i].draw(g);
 			
 			if (load != true) {
 				for (int z = 0; z < 3; z++) {
@@ -99,7 +97,7 @@ public class BlackJack extends JPanel implements ActionListener {
 		Player[] players = new Player[quantity];
 		
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player("RED QUEEN" , true, 500000000, new Persona("RANDOM"), false);
+			players[i] = new Player("" , true, 500000000, new Persona("RANDOM"), false);
 			players[i].setName(players[i].getCharacter().getName().toUpperCase());
 			players[i].setPosition(i);
 			players[i].setRank(ThreadLocalRandom.current().nextInt(1, 100));
@@ -109,16 +107,6 @@ public class BlackJack extends JPanel implements ActionListener {
 		
 		return players;
 		
-	}
-	
-	public Sprite[] createHelpBar() {
-		Sprite[] helpBar = new Sprite[this.players.length];
-		for (int i = 0; i < helpBar.length; i++) {
-			helpBar[i] = new Sprite();
-			helpBar[i].setImage(Path.helpBar + players[i].getCharacter().getName() + ".png");
-			helpBar[i].setLocation(6, Settings.convertPositionY(500));
-		}
-		return helpBar;
 	}
 	
 	@Override

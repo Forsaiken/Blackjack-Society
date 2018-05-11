@@ -40,6 +40,7 @@ public class Player extends Sprite{
 	private Sprite[] bjSoma = new Sprite[4];
 	private Sprite bjMoney2;
 	private Sprite bjBet;
+	private Sprite bjBar;
 	
 	public Player (String name, boolean male, int money, Persona character, boolean control){
 		
@@ -63,16 +64,15 @@ public class Player extends Sprite{
 			Font largeFont = new Font("axis", Font.CENTER_BASELINE, Settings.convertFont(36));
 			int width = Settings.convertWidth(313);
 			
-			
-			
 			int line = (Settings.WIDTH - (width * 6)) / 7;
+			System.out.println(Math.floor((Settings.WIDTH - (width * 6)) / 7));
 			int resto = (Settings.WIDTH - (width * 6)) % 7;
 			int panelHeight = ((Settings.HEIGHT - ((line * 4) + resto)) - Settings.convertHeight(80)) / 2;
 			int PanelPosition = Settings.convertHeight(80) + ((line * 3) + resto/2) + panelHeight;
 			
 			this.bjRect = new Sprite();
 			this.bjRect.setFillRect(width, panelHeight, Color.BLACK);
-			this.bjRect.setLocation(Settings.convertPositionX((313 * this.position) + (line * (this.position + 1))) + resto / 2, PanelPosition);
+			this.bjRect.setLocation(width * this.position + (line * (this.position + 1)) + resto / 2, PanelPosition);
 			this.bjRect.setRadialGradient(Settings.convertWidth(220), new float[] {0f,1f}, this.character.getThemeColor());
 			
 			this.bjName = new Sprite();
@@ -108,6 +108,11 @@ public class Player extends Sprite{
 			this.bjBet.setString("BET: $" + Settings.convertToMoney(this.bjbet), smallFont, Color.WHITE, 1f);
 			this.bjBet.setLocation(bjRect.getPosX() + Settings.convertPositionX(18), bjMoney2.getPosY() + bjMoney2.getStringHeight(g) +  Settings.convertPositionY(10));
 			
+			this.bjBar = new Sprite();
+			this.bjBar.setImage(Path.helpBar + this.getCharacter().getName() + ".png");
+			this.bjBar.redimensionImageByWidth(width * 6 + line * 5);
+			this.bjBar.setLocation(line + resto / 2, bjRect.getPosY() - bjBar.getHeight() - line);
+			
 			for (int i = 0; i < 4; i++) {
 				this.bjSoma[i] = new Sprite();
 				this.bjSoma[i].setString("", mediumFont, Color.WHITE, 1f);
@@ -134,7 +139,7 @@ public class Player extends Sprite{
 		}
 		bjMoney2.draw(g);
 		bjBet.draw(g);
-		
+		bjBar.draw(g);
 		}
 	}
 	
