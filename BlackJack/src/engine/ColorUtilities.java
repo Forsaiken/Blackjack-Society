@@ -1,5 +1,5 @@
 /*
- * $Id$
+ *
  *
  * Dual-licensed under LGPL (Sun and Romain Guy) and BSD (Romain Guy).
  *

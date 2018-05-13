@@ -11,14 +11,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import engine.Card;
 import engine.Display;
 import engine.NameGenerator;
-import engine.Persona;
-import engine.Player;
 import engine.Sprite;
 import global.Path;
 import global.Settings;
+import objects.Card;
+import objects.Dealer;
+import objects.Persona;
+import objects.Player;
 
 public class BlackJack extends JPanel implements ActionListener {
 	
@@ -27,11 +28,10 @@ public class BlackJack extends JPanel implements ActionListener {
 	ArrayList<Card> deck = new ArrayList<Card>();
 	Player[] players;
 	Sprite[] HBplayers;
+	Dealer dealer;
 	boolean load = false;
 
 	public BlackJack(Display window, CountDownLatch CDL) {
-		
-		setSize(Settings.WIDTH,Settings.HEIGHT);
 		
     	if (Settings.FULL_SCREEN == true && Settings.heightMonitor != Settings.heightResolution){
     		int wDiff = Settings.widthMonitor - Settings.widthResolution;
@@ -41,10 +41,7 @@ public class BlackJack extends JPanel implements ActionListener {
     	
     	deck = this.createDeck();
     	players = this.createRandomPlayers(6);
-    	
-    	for (int i = 0; i < players.length; i++) {
-    		
-    	}
+    	dealer = new Dealer();    	
    
     	Timer t = new Timer((int) Settings.FPS, this);
     	t.start();
@@ -53,21 +50,28 @@ public class BlackJack extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		
+		dealer.blackjack(g);
+		
 		for (int i = 0; i < players.length; i++) {
 			
 			players[i].blackjack(g);
 			
 			if (load != true) {
-				for (int z = 0; z < 3; z++) {
+				for (int z = 0; z < 6; z++) {
 					int index = ThreadLocalRandom.current().nextInt(0, deck.size());
 					Card pickcard = this.deck.get(index);
 					this.deck.remove(index);
 					players[i].BJaddCard(0, pickcard);
 				}
+				
+				if (i < 5) {
+					int index = ThreadLocalRandom.current().nextInt(0, deck.size());
+					Card pickcard = this.deck.get(index);
+					this.deck.remove(index);
+					dealer.BJaddCard(0, pickcard);
+				}
 			}
 		}
-		
-		
 		
 		load = true;
 	}
@@ -97,7 +101,7 @@ public class BlackJack extends JPanel implements ActionListener {
 		Player[] players = new Player[quantity];
 		
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player("" , true, 500000000, new Persona("RANDOM"), false);
+			players[i] = new Player("" , 500000000, new Persona("RANDOM"), false);
 			players[i].setName(players[i].getCharacter().getName().toUpperCase());
 			players[i].setPosition(i);
 			players[i].setRank(ThreadLocalRandom.current().nextInt(1, 100));
@@ -112,6 +116,7 @@ public class BlackJack extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
+		repaint();
 		
 	}
 

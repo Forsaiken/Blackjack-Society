@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import engine.Display;
-import engine.Persona;
-import engine.Profile;
 import engine.Sprite;
 import engine.UI;
 import global.Constants;
 import global.Settings;
+import objects.Persona;
+import objects.Profile;
 
 public class MainScreen extends JPanel implements ActionListener, KeyListener, Constants {
 

@@ -18,14 +18,14 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 
 import engine.Display;
-import engine.Persona;
-import engine.Profile;
 import engine.Sprite;
 import engine.UI;
 import global.Constants;
 import global.Settings;
 import global.Strings;
 import global.Switch;
+import objects.Persona;
+import objects.Profile;
 
 public class Title extends JPanel implements ActionListener, KeyListener{
 	

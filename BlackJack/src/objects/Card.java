@@ -1,7 +1,8 @@
-package engine;
+package objects;
 
 import java.awt.Graphics;
 
+import engine.Sprite;
 import global.Path;
 import global.Settings;
 

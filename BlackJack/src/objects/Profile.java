@@ -1,4 +1,4 @@
-package engine;
+package objects;
 
 public class Profile {
 	

@@ -1,7 +1,9 @@
-package engine;
+package objects;
 
 import java.util.ArrayList;
 
+import engine.BlendComposite;
+import engine.Sprite;
 import global.Path;
 import global.Settings;
 
@@ -24,56 +26,57 @@ public class Player extends Sprite{
 	
 	// VARIABLES - BLACKJACK
 	
-	private boolean load = false;
+	public static int BJwidth = Settings.convertWidth(313);
+	public static int BJline = (Settings.WIDTH - (BJwidth * 6)) / 7;
+	public static int BJresto = (Settings.WIDTH - (BJwidth * 6)) % 7;
+	public static int BJbarHeight = (int)(80 * (float) (BJwidth * 6 + BJline * 5) / (float) 1908);
+	public static int BJpanelHeight = (Settings.HEIGHT - BJline * 4 - BJresto - BJbarHeight) / 2;
+	public static int BJpanelPosY = Settings.HEIGHT - BJline - BJpanelHeight - BJresto/2;
+	
+	public boolean load = true;
 	private int bjmoney;
 	private int bjbet;
-	private int[] bjsoma = new int[4];
+	public int[] bjsoma = new int[4];
 	
-	private ArrayList<ArrayList<Card>> bjHand = new ArrayList<ArrayList<Card>>();
+	public ArrayList<ArrayList<Card>> bjHand = new ArrayList<ArrayList<Card>>();
 	
-	private Sprite bjRect;
-	private Sprite bjName;
+	public Sprite bjRect;
+	public Sprite bjName;
 	private Sprite bjCharacter;
 	private Sprite bjBackCharacter;
-	private Sprite bjRank;
-	private Sprite bjMoney;
-	private Sprite[] bjSoma = new Sprite[4];
-	private Sprite bjMoney2;
-	private Sprite bjBet;
-	private Sprite bjBar;
+	public Sprite bjRank;
+	public Sprite bjMoney;
+	public Sprite[] bjSoma = new Sprite[4];
+	public Sprite bjMoney2;
+	public Sprite bjBet;
+	public Sprite bjBar;
+	public Sprite bjBarTexture;
 	
-	public Player (String name, boolean male, int money, Persona character, boolean control){
+	public Player (String name, int money, Persona character, boolean control){
 		
 		this.name = name;
 		this.money = money;
-		this.setMale(male);
 		this.control = control;
 		this.character = character;
+		
 	}
 	 
 	// ACTIONS
 	
 	public void blackjack(Graphics g) {
 		
-		if (load != true) {
+		if (load) {
 			
 			// CONFIG VARIABLE - PLAYER BASE IN BLACKJACK
 			
 			Font smallFont = new Font("axis", Font.CENTER_BASELINE, Settings.convertFont(18));
 			Font mediumFont = new Font("axis", Font.CENTER_BASELINE, Settings.convertFont(30));
 			Font largeFont = new Font("axis", Font.CENTER_BASELINE, Settings.convertFont(36));
-			int width = Settings.convertWidth(313);
-			
-			int line = (Settings.WIDTH - (width * 6)) / 7;
-			System.out.println(Math.floor((Settings.WIDTH - (width * 6)) / 7));
-			int resto = (Settings.WIDTH - (width * 6)) % 7;
-			int panelHeight = ((Settings.HEIGHT - ((line * 4) + resto)) - Settings.convertHeight(80)) / 2;
-			int PanelPosition = Settings.convertHeight(80) + ((line * 3) + resto/2) + panelHeight;
 			
 			this.bjRect = new Sprite();
-			this.bjRect.setFillRect(width, panelHeight, Color.BLACK);
-			this.bjRect.setLocation(width * this.position + (line * (this.position + 1)) + resto / 2, PanelPosition);
-			this.bjRect.setRadialGradient(Settings.convertWidth(220), new float[] {0f,1f}, this.character.getThemeColor());
+			this.bjRect.setFillRect(BJwidth, BJpanelHeight, Color.BLACK);
+			this.bjRect.setLocation(BJwidth * this.position + (BJline * (this.position + 1)) + BJresto / 2, BJpanelPosY);
+			this.bjRect.setRadialGradient(Settings.convertWidth(240), new float[] {0f,1f}, this.character.getThemeColor());
 			
 			this.bjName = new Sprite();
 			this.bjName.setString(this.name, largeFont, Color.WHITE, 1f);
@@ -86,7 +89,7 @@ public class Player extends Sprite{
 			this.bjCharacter.setLocation(bjRect.getPosX(), bjName.getPosY() + ((bjName.getPosY() - bjName.getStringHeight(g)) - bjRect.getPosY()) + 2);
 			
 			this.bjBackCharacter = new Sprite();
-			this.bjBackCharacter.setFillRect(width, bjCharacter.getHeight() + 4, Color.WHITE);
+			this.bjBackCharacter.setFillRect(BJwidth, bjCharacter.getHeight() + 4, Color.WHITE);
 			this.bjBackCharacter.setLocation(bjRect.getPosX(), bjCharacter.getPosY() - 2);
 			
 			this.bjRank = new Sprite();
@@ -110,8 +113,18 @@ public class Player extends Sprite{
 			
 			this.bjBar = new Sprite();
 			this.bjBar.setImage(Path.helpBar + this.getCharacter().getName() + ".png");
-			this.bjBar.redimensionImageByWidth(width * 6 + line * 5);
-			this.bjBar.setLocation(line + resto / 2, bjRect.getPosY() - bjBar.getHeight() - line);
+			this.bjBar.redimensionImageByWidth(BJwidth * 6 + BJline * 5);
+			this.bjBar.setLocation(BJline + BJresto / 2, bjRect.getPosY() - bjBar.getHeight() - BJline);
+			
+			System.out.println(bjBar.getHeight() + " " + this.BJbarHeight);
+			
+			this.bjBarTexture = new Sprite();
+			this.bjBarTexture.setImage(Path.helpBar + "Texture.png");
+			this.bjBarTexture.setBlendMode(BlendComposite.ColorBurn);
+			this.bjBarTexture.setAlpha(0.35f);
+			this.bjBarTexture.redimensionImageByWidth(BJwidth * 6 + BJline * 5);
+			this.bjBarTexture.setLocation(BJline + BJresto / 2, bjRect.getPosY() - bjBar.getHeight() - BJline);
+			
 			
 			for (int i = 0; i < 4; i++) {
 				this.bjSoma[i] = new Sprite();
@@ -119,7 +132,7 @@ public class Player extends Sprite{
 				this.bjSoma[i].setFormatString(CENTER);
 			}
 			
-			load = true;
+			load = false;
 			
 		} else {
 		
@@ -140,6 +153,7 @@ public class Player extends Sprite{
 		bjMoney2.draw(g);
 		bjBet.draw(g);
 		bjBar.draw(g);
+		bjBarTexture.draw(g);
 		}
 	}
 	
@@ -165,6 +179,10 @@ public class Player extends Sprite{
 		this.rank = rank;
 	}
 	
+	public void reloadSprites() {
+		this.load = false;
+	}
+	
 	// SET - BLACKJACK PROPERTIES
 	
 	public void setBJmoney(int money) {
@@ -186,12 +204,12 @@ public class Player extends Sprite{
 	public void BJorganizeHand(){
 		for (int x = 0; x < bjHand.size(); x++) {
 			for (int y = 0; y < bjHand.get(x).size(); y++) {
-				if (y == 0 && bjHand.get(x).size() > 1)
-					bjHand.get(x).get(y).setLocation(bjRect.getPosX() + bjRect.getWidth()/2 - Settings.convertWidth(92)/2 - (y+1 * Settings.convertPositionX(18)), bjMoney.getPosY() + Settings.convertPositionY(30));
-				else if (y == 0)
-					bjHand.get(x).get(y).setLocation(bjRect.getPosX() + bjRect.getWidth()/2 - Settings.convertWidth(92)/2 - (y * Settings.convertPositionX(18)), bjMoney.getPosY() + Settings.convertPositionY(30));
+				if (y == 0)
+					bjHand.get(x).get(y).setLocation(bjRect.getPosX() + bjRect.getWidth()/2 - Settings.convertWidth(92)/2 - (bjHand.get(x).size() - 1) * Settings.convertPositionX(18) / 2,
+													 bjMoney.getPosY() + Settings.convertPositionY(30));
 				else
-					bjHand.get(x).get(y).setLocation(bjHand.get(x).get(y-1).getPosX() + Settings.convertPositionX(18), bjMoney.getPosY() + Settings.convertPositionY(30));
+					bjHand.get(x).get(y).setLocation(bjHand.get(x).get(y-1).getPosX() + Settings.convertPositionX(18),
+													 bjMoney.getPosY() + Settings.convertPositionY(30));
 					
 				bjHand.get(x).get(y).setDimensionByWidth(92);
 			}
@@ -233,7 +251,11 @@ public class Player extends Sprite{
 		return soma;
 	}
 	
-	// GETS
+	// GETS - BLACKJACK PANEL
+	
+	public Sprite getBJpanel() {
+		return this.bjRect;
+	}
 	
 	public String getName() {
 		return name;

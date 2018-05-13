@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import global.Constants;
 import global.Settings;
 
-public class Sprite extends JPanel implements Constants {
+public class Sprite implements Constants {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -52,20 +52,16 @@ public class Sprite extends JPanel implements Constants {
 	private Image scaledImage;
 	private byte shape;
 	private FontMetrics metrics;
-	
-	private boolean visibility;
 	private Graphics2D g2d;
-	private boolean pressed;
 	
-	// VARIABLES - GRADIENT
+	// VARIABLES - COLORS
 	
+	private BlendComposite blendMode;	
 	private Color color;
 	private RadialGradientPaint radialGradient;	
-	private float gradientRadius;
-	private float[] gradientDiffusion;
-	private Color[] gradientColor;
 	
 	public void draw(Graphics g) {
+		
 		g2d = (Graphics2D) g;
 		
 		if (this.animation == true) {
@@ -111,15 +107,18 @@ public class Sprite extends JPanel implements Constants {
 			}
 		}
 		
+		if (blendMode != null)
+				g2d.setComposite(blendMode.derive(alpha[1]));
+			else
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha[1]));
+		
 		if (image != null){
 			 
-			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha[1]));
 			g2d.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.drawImage(scaledImage, posX[1], posY[1], width[1], height[1], null);
 			
 		} else if (string != null){
 			
-			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha[1]));
 			g2d.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			
 			if (spacedFont == true) {
@@ -137,7 +136,6 @@ public class Sprite extends JPanel implements Constants {
 			
 		} else if (shape == Constants.RECT) {
 			
-			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha[1]));
 			g2d.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 			
 			if (this.radialGradient != null) {
@@ -186,6 +184,15 @@ public class Sprite extends JPanel implements Constants {
 		scaledImage = image.getScaledInstance(width, (int) scaledHeight, Image.SCALE_SMOOTH);
 		this.width[2] = width;
 		this.height[2] = (int) scaledHeight;
+		this.width[1] = this.width[2];
+		this.height[1] = this.height[2];
+	}
+	
+	public void redimensionImageByHeight(int height) {
+		float scaledWidth = image.getWidth() * ((float)height / (float)image.getHeight());
+		scaledImage = image.getScaledInstance((int) scaledWidth, height, Image.SCALE_SMOOTH);
+		this.width[2] = (int) scaledWidth;
+		this.height[2] = height;
 		this.width[1] = this.width[2];
 		this.height[1] = this.height[2];
 	}
@@ -391,6 +398,10 @@ public class Sprite extends JPanel implements Constants {
 	
 	// SETS - ANIMATION
 	
+	public void setBlendMode(BlendComposite blend) {
+		this.blendMode = blend;
+	}
+	
 	public void setAnimation (boolean animation){
 		this.animation = animation;
 	}
@@ -419,12 +430,6 @@ public class Sprite extends JPanel implements Constants {
 		}
 	}
 	
-	public void setPressed(boolean pressed){
-		
-		this.pressed = pressed;
-		
-	}
-	
 	public void resetCountAnimation () {
 		this.cX[0] = 0;
 		this.cY[0] = 0;
@@ -440,9 +445,6 @@ public class Sprite extends JPanel implements Constants {
 	}
 	
 	public void setRadialGradient (int radius, float[] dist, Color[] colors) {
-		this.gradientRadius = radius;
-		this.gradientDiffusion = dist;
-		this.gradientColor = colors;
 		this.radialGradient = new RadialGradientPaint(this.posX[1] + this.width[2]/2,this.posY[1] + this.height[2]/2, radius, dist, colors, CycleMethod.NO_CYCLE);
 	}
 

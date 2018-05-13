@@ -1,7 +1,9 @@
-package engine;
+package objects;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import engine.NameGenerator;
 
 public class Society {
 	
@@ -17,9 +19,9 @@ public class Society {
 			male = random.nextBoolean();
 			money = random.nextInt(4500) + 500;
 			if (male) { 
-				society.add(new Player(NameGenerator.generateMaleName(), male, money, null ,false));
+				society.add(new Player(NameGenerator.generateMaleName(), money, null ,false));
 			}	else	{
-				society.add(new Player(NameGenerator.generateFemaleName(), male, money, null ,false));
+				society.add(new Player(NameGenerator.generateFemaleName(), money, null ,false));
 			}
 		}
 		

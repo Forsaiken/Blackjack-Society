@@ -416,9 +416,7 @@ public class UI implements KeyListener {
 			tempArray[0][i].setFormatString(this.menuFormatText);
 		}
 		
-		
 		this.menuStrings = tempArray;
-		
 		
 	}
 		

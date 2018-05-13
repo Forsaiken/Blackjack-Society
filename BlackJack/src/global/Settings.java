@@ -49,7 +49,7 @@ public class Settings {
 		}
 		
 		public static int convertHeight(int height){
-			int converted = (int)(height * ((double)HEIGHT/1080));
+			int converted = (int)(height * ((float)HEIGHT/(float)1080));
 			return converted;
 		}
 		
@@ -95,9 +95,7 @@ public class Settings {
 			
 		}
 		
-		public static String convertToMoney (int money) {
-			
+		public static String convertToMoney (int money) {	
 			return NumberFormat.getIntegerInstance(Locale.GERMANY).format(money);
-			
 		}
 }
