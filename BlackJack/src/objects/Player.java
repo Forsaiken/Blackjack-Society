@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import engine.BlendComposite;
 import engine.Sprite;
+import global.Constants;
 import global.Path;
 import global.Settings;
 
@@ -77,54 +78,84 @@ public class Player extends Sprite{
 			this.bjRect.setFillRect(BJwidth, BJpanelHeight, Color.BLACK);
 			this.bjRect.setLocation(BJwidth * this.position + (BJline * (this.position + 1)) + BJresto / 2, BJpanelPosY);
 			this.bjRect.setRadialGradient(Settings.convertWidth(240), new float[] {0f,1f}, this.character.getThemeColor());
+			this.bjRect.setInitialPosX(0 - BJwidth);
+			this.bjRect.setPosXToInitial();
+			this.bjRect.setMotionAnimation(0.1f*(position + 1), 0, 0, 0, 0);
 			
 			this.bjName = new Sprite();
 			this.bjName.setString(this.name, largeFont, Color.WHITE, 1f);
-			this.bjName.setLocation(bjRect.getPosX() + bjRect.getWidth() / 2, bjRect.getPosY() + bjName.getStringHeight(g) + Settings.convertPositionY(14));
+			this.bjName.setLocation(bjRect.getFinalX() + bjRect.getFinalWidth() / 2, bjRect.getFinalY() + bjName.getStringHeight(g) + Settings.convertPositionY(14));
 			this.bjName.setFormatString(CENTER);
 			this.bjName.setSpacementString(0.001);
+			this.bjName.setInitialPosX(0 - BJwidth/2);
+			this.bjName.setPosXToInitial();
+			this.bjName.setMotionAnimation(0.1f*(position + 1), 0, 0, 0, 0);
 			
 			this.bjCharacter = new Sprite();
 			this.bjCharacter.setImage(Path.BJavatar + this.character.getName() + ".png");
-			this.bjCharacter.setLocation(bjRect.getPosX(), bjName.getPosY() + ((bjName.getPosY() - bjName.getStringHeight(g)) - bjRect.getPosY()) + 2);
+			this.bjCharacter.setLocation(bjRect.getFinalX(), bjName.getFinalY() + ((bjName.getFinalY() - bjName.getStringHeight(g)) - bjRect.getFinalY()) + 2);
+			this.bjCharacter.setInitialPosX(0 - BJwidth);
+			this.bjCharacter.setPosXToInitial();
+			this.bjCharacter.setMotionAnimation(0.1f*(position + 1), 0, 0, 0, 0);
 			
 			this.bjBackCharacter = new Sprite();
-			this.bjBackCharacter.setFillRect(BJwidth, bjCharacter.getHeight() + 4, Color.WHITE);
-			this.bjBackCharacter.setLocation(bjRect.getPosX(), bjCharacter.getPosY() - 2);
+			this.bjBackCharacter.setFillRect(BJwidth, bjCharacter.getFinalHeight() + 4, Color.WHITE);
+			this.bjBackCharacter.setLocation(bjRect.getFinalX(), bjCharacter.getFinalY() - 2);
+			this.bjBackCharacter.setInitialPosX(0 - BJwidth);
+			this.bjBackCharacter.setPosXToInitial();
+			this.bjBackCharacter.setMotionAnimation(0.1f*(position + 1), 0, 0, 0, 0);
 			
 			this.bjRank = new Sprite();
 			this.bjRank.setString("RANK: #" + this.rank , smallFont, Color.WHITE, 1f);
-			this.bjRank.setLocation(bjRect.getPosX() + Settings.convertPositionX(18), bjBackCharacter.getPosY() + bjBackCharacter.getHeight() + bjRank.getStringHeight(g) + Settings.convertPositionY(10));
+			this.bjRank.setLocation(bjRect.getFinalX() + Settings.convertPositionX(18), bjBackCharacter.getFinalY() + bjBackCharacter.getFinalHeight() + bjRank.getStringHeight(g) + Settings.convertPositionY(10));
 			this.bjRank.setFormatString(LEFT_TO_RIGHT);
+			this.bjRank.setInitialPosX(0 - BJwidth + Settings.convertPositionX(18));
+			this.bjRank.setPosXToInitial();
+			this.bjRank.setMotionAnimation(0.1f*(position + 1), 0, 0, 0, 0);
 			
 			this.bjMoney = new Sprite();
 			this.bjMoney.setString("$" + Settings.convertToMoney(this.money), smallFont , Color.WHITE, 1f);
-			this.bjMoney.setLocation(bjRank.getPosX() + Settings.convertPositionX(145), bjRank.getPosY());
+			this.bjMoney.setLocation(bjRank.getFinalX() + Settings.convertPositionX(145), bjRank.getFinalY());
 			this.bjMoney.setFormatString(LEFT_TO_RIGHT);
+			this.bjMoney.setInitialPosX(0 - BJwidth + Settings.convertPositionX(145));
+			this.bjMoney.setPosXToInitial();
+			this.bjMoney.setMotionAnimation(0.1f*(position + 1), 0, 0, 0, 0);
 			
 			this.bjMoney2 = new Sprite();
 			this.bjMoney2.setString("MATCH: $" + Settings.convertToMoney(this.bjmoney), smallFont, Color.WHITE, 1f);
-			this.bjMoney2.setLocation(bjRect.getPosX() + Settings.convertPositionX(18), this.bjMoney.getPosY() + Settings.convertPositionY(250));
+			this.bjMoney2.setLocation(bjRect.getFinalX() + Settings.convertPositionX(18), this.bjMoney.getFinalY() + Settings.convertPositionY(250));
 			this.bjMoney2.setFormatString(LEFT_TO_RIGHT);
+			this.bjMoney2.setInitialPosX(0 - BJwidth + Settings.convertPositionX(18));
+			this.bjMoney2.setPosXToInitial();
+			this.bjMoney2.setMotionAnimation(0.1f*(position + 1), 0, 0, 0, 0);
 			
 			this.bjBet = new Sprite();
 			this.bjBet.setString("BET: $" + Settings.convertToMoney(this.bjbet), smallFont, Color.WHITE, 1f);
-			this.bjBet.setLocation(bjRect.getPosX() + Settings.convertPositionX(18), bjMoney2.getPosY() + bjMoney2.getStringHeight(g) +  Settings.convertPositionY(10));
+			this.bjBet.setLocation(bjRect.getFinalX() + Settings.convertPositionX(18), bjMoney2.getFinalY() + bjMoney2.getStringHeight(g) +  Settings.convertPositionY(10));
+			this.bjBet.setInitialPosX(0 - BJwidth + Settings.convertPositionX(18));
+			this.bjBet.setPosXToInitial();
+			this.bjBet.setMotionAnimation(0.1f*(position + 1), 0, 0, 0, 0);
 			
 			this.bjBar = new Sprite();
 			this.bjBar.setImage(Path.helpBar + this.getCharacter().getName() + ".png");
 			this.bjBar.redimensionImageByWidth(BJwidth * 6 + BJline * 5);
-			this.bjBar.setLocation(BJline + BJresto / 2, bjRect.getPosY() - bjBar.getHeight() - BJline);
-			
-			System.out.println(bjBar.getHeight() + " " + this.BJbarHeight);
+			this.bjBar.setLocation(BJline + BJresto / 2, bjRect.getFinalY() - bjBar.getFinalHeight() - BJline);
 			
 			this.bjBarTexture = new Sprite();
 			this.bjBarTexture.setImage(Path.helpBar + "Texture.png");
 			this.bjBarTexture.setBlendMode(BlendComposite.ColorBurn);
 			this.bjBarTexture.setAlpha(0.35f);
 			this.bjBarTexture.redimensionImageByWidth(BJwidth * 6 + BJline * 5);
-			this.bjBarTexture.setLocation(BJline + BJresto / 2, bjRect.getPosY() - bjBar.getHeight() - BJline);
-			
+			this.bjBarTexture.setLocation(BJline + BJresto / 2, bjRect.getFinalY() - bjBar.getFinalHeight() - BJline);
+
+			this.bjRect.setAnimation(true);
+			this.bjName.setAnimation(true);
+			this.bjCharacter.setAnimation(true);
+			this.bjBackCharacter.setAnimation(true);
+			this.bjRank.setAnimation(true);
+			this.bjMoney.setAnimation(true);
+			this.bjMoney2.setAnimation(true);
+			this.bjBet.setAnimation(true);
 			
 			for (int i = 0; i < 4; i++) {
 				this.bjSoma[i] = new Sprite();
@@ -205,14 +236,24 @@ public class Player extends Sprite{
 		for (int x = 0; x < bjHand.size(); x++) {
 			for (int y = 0; y < bjHand.get(x).size(); y++) {
 				if (y == 0)
-					bjHand.get(x).get(y).setLocation(bjRect.getPosX() + bjRect.getWidth()/2 - Settings.convertWidth(92)/2 - (bjHand.get(x).size() - 1) * Settings.convertPositionX(18) / 2,
-													 bjMoney.getPosY() + Settings.convertPositionY(30));
+					bjHand.get(x).get(y).setLocation(bjRect.getFinalX() + bjRect.getFinalWidth()/2 - Settings.convertWidth(92)/2 - (bjHand.get(x).size() - 1) * Settings.convertPositionX(18) / 2,
+													 bjMoney.getFinalY() + Settings.convertPositionY(30));
 				else
 					bjHand.get(x).get(y).setLocation(bjHand.get(x).get(y-1).getPosX() + Settings.convertPositionX(18),
-													 bjMoney.getPosY() + Settings.convertPositionY(30));
+													 bjMoney.getFinalY() + Settings.convertPositionY(30));
 					
 				bjHand.get(x).get(y).setDimensionByWidth(92);
 			}
+		}
+	}
+	
+	public void setStatus(byte status) {
+		if (status == Constants.INACTIVE) {
+			bjRect.setRadialGradient(Settings.convertWidth(240), new float[] {0f,1f}, new Color[] {new Color(150,150,150), new Color(30,30,30)});
+		}
+		
+		if (status == Constants.ACTIVE) {
+			this.bjRect.setRadialGradient(Settings.convertWidth(240), new float[] {0f,1f}, this.character.getThemeColor());
 		}
 	}
 	
@@ -280,5 +321,8 @@ public class Player extends Sprite{
 	public void setMale(boolean male) {
 		this.male = male;
 	}
-
+	
+	public boolean getLoad() {
+		return this.load;
+	}
 }

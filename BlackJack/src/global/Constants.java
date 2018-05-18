@@ -7,4 +7,9 @@ public interface Constants {
 	byte RIGHT_TO_LEFT 	= 2; 
 	
 	byte RECT			= 5;
+	
+	// Blackjack
+	
+	byte INACTIVE = 0;
+	byte ACTIVE = 1;
 }

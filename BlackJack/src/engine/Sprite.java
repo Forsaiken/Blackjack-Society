@@ -58,7 +58,11 @@ public class Sprite implements Constants {
 	
 	private BlendComposite blendMode;	
 	private Color color;
+	
 	private RadialGradientPaint radialGradient;	
+	private int gradientRadius;
+	private float[] gradientDistance;
+	private Color[] gradientColors;
 	
 	public void draw(Graphics g) {
 		
@@ -105,7 +109,12 @@ public class Sprite implements Constants {
 				this.animation = false;
 				this.resetCountAnimation();
 			}
+			
+			if (this.radialGradient != null) {
+				this.radialGradient = new RadialGradientPaint(this.posX[1] + this.width[1]/2,this.posY[1] + this.height[1]/2, gradientRadius, gradientDistance, gradientColors, CycleMethod.NO_CYCLE);
+			}
 		}
+		
 		
 		if (blendMode != null)
 				g2d.setComposite(blendMode.derive(alpha[1]));
@@ -234,6 +243,8 @@ public class Sprite implements Constants {
 	public void setLocation(int x, int y) {
 		this.posX[1] = x;
 		this.posY[1] = y;
+		this.posX[2] = x;
+		this.posY[2] = y;
 	}
 	
 	public void setFinalLocation(int x, int y) {
@@ -410,6 +421,8 @@ public class Sprite implements Constants {
 		if (posX != 0) {
 			this.spdX = (this.posX[2] - this.posX[0]) / (posX * Settings.FPS);
 			this.cX[1] = (int) (Settings.FPS * posX);
+			System.out.println(this.posX[2] + " - (" + this.posX[0] + ") = " + (this.posX[2] - this.posX[0]));
+			System.out.println(spdX + " " + cX[1]);
 		} else { this.cX[1] = 0;
 		} if (posY != 0) {
 			this.spdY = (this.posY[2] - this.posY[0]) / (posY * Settings.FPS);
@@ -444,8 +457,11 @@ public class Sprite implements Constants {
 		this.color = color;
 	}
 	
-	public void setRadialGradient (int radius, float[] dist, Color[] colors) {
-		this.radialGradient = new RadialGradientPaint(this.posX[1] + this.width[2]/2,this.posY[1] + this.height[2]/2, radius, dist, colors, CycleMethod.NO_CYCLE);
+	public void setRadialGradient (int radius, float[] distance, Color[] colors) {
+		this.gradientRadius = radius;
+		this.gradientDistance = distance;
+		this.gradientColors = colors;
+		this.radialGradient = new RadialGradientPaint(this.posX[1] + this.width[1]/2,this.posY[1] + this.height[1]/2, radius, distance, colors, CycleMethod.NO_CYCLE);
 	}
 
 	public void grayScale() {

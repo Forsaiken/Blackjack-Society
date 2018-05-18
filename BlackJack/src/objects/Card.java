@@ -25,7 +25,6 @@ public class Card {
 	public void load() {
 		card = new Sprite();
 		card.setImage(path);
-		System.out.println(path);
 	}
 	
 	public void draw(Graphics g) {

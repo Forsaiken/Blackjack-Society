@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,6 +13,7 @@ import javax.swing.Timer;
 import engine.Display;
 import engine.NameGenerator;
 import engine.Sprite;
+import global.Constants;
 import global.Path;
 import global.Settings;
 import objects.Card;
@@ -30,6 +30,7 @@ public class BlackJack extends JPanel implements ActionListener {
 	Sprite[] HBplayers;
 	Dealer dealer;
 	boolean load = false;
+	int phase = 0;
 
 	public BlackJack(Display window, CountDownLatch CDL) {
 		
@@ -43,7 +44,7 @@ public class BlackJack extends JPanel implements ActionListener {
     	players = this.createRandomPlayers(6);
     	dealer = new Dealer();    	
    
-    	Timer t = new Timer((int) Settings.FPS, this);
+    	Timer t = new Timer((int) Settings.FPS1000, this);
     	t.start();
 	}
 	
@@ -52,28 +53,18 @@ public class BlackJack extends JPanel implements ActionListener {
 		
 		dealer.blackjack(g);
 		
-		for (int i = 0; i < players.length; i++) {
-			
+		for (int i = players.length - 1; i > -1; i--) {			
 			players[i].blackjack(g);
-			
-			if (load != true) {
-				for (int z = 0; z < 6; z++) {
-					int index = ThreadLocalRandom.current().nextInt(0, deck.size());
-					Card pickcard = this.deck.get(index);
-					this.deck.remove(index);
-					players[i].BJaddCard(0, pickcard);
-				}
-				
-				if (i < 5) {
-					int index = ThreadLocalRandom.current().nextInt(0, deck.size());
-					Card pickcard = this.deck.get(index);
-					this.deck.remove(index);
-					dealer.BJaddCard(0, pickcard);
-				}
-			}
 		}
 		
 		load = true;
+	}
+	
+	public void addCard(Player player) {
+		int index = ThreadLocalRandom.current().nextInt(0, deck.size());
+		Card pickcard = this.deck.get(index);
+		this.deck.remove(index);
+		player.BJaddCard(0, pickcard);
 	}
 
 	public ArrayList<Card> createDeck() {
@@ -113,9 +104,14 @@ public class BlackJack extends JPanel implements ActionListener {
 		
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	@Override	public void actionPerformed(ActionEvent arg0) {
+
+		if (phase == 0 && players[5].getLoad() == false) {
+			for (int i = 0; i < players.length; i++) {
+				players[i].setStatus(Constants.INACTIVE);
+			}
+		}
+		
 		repaint();
 		
 	}
